@@ -76,6 +76,7 @@ router.route('/createmail/').post(function(req, res){
   m.recipients = req.body.r;
   m.text = req.body.t;
   m.date = new Date();
+  console.log("req.body.s: " + req.body.s);
   console.log(m);
   m.save(function(err) {
     if (err){
@@ -116,9 +117,9 @@ router.route('/deletefolder/:id').delete(function(req, res){
 // Update folder name
 router.route('/updfoldername/:id').put(function(req, res){
   console.log(req.params.id);
-  console.log(req.query);
+  console.log(req.body.folder);
   var oldname = req.params.id;
-  var newname = req.query.folder;
+  var newname = req.body.folder;
   console.log("Renaming " + oldname + " to " + newname);
   Mails.update({folder : oldname}, {$set : {folder : newname}}, {multi : true},
                function(err, mails) {
@@ -127,7 +128,7 @@ router.route('/updfoldername/:id').put(function(req, res){
                  }
                  res.json({message:"Successfully renamed"});
                });
-
-})
+res.json({message:"Successfully renamed"});
+});
 
 module.exports = router;
