@@ -90,7 +90,7 @@ router.route('/createmail/').post(function(req, res){
 // Move Mail
 router.route('/movemail/:id').put(function(req, res) {
   var id = req.params.id;
-  var new_folder = req.query.folder;
+  var new_folder = req.body.folder;
   console.log("Moving " + id + " to " + new_folder);
   Mails.update({"_id" : id}, {$set : {"folder" : new_folder}},
              function(err, mail) {
