@@ -28,7 +28,13 @@ import {MailApi} from 'mailApi';
     <button (click) ="updateMail(mail)">move2Folder</button>
     </div>
     <div> {{myText}} </div>
-    <br>
+    <br><br><br><br><br><br><br>
+
+    <div>sender: <input type="text" #nnsender></input>  <div>
+    <div>empfänger: <input type="text" #nnempfaenger></input>  <div>
+    <div>betreff: <input type="text" #nnbetreff></input>  <div>
+    <div>text: <input type="text" #nntext></input><button (click)="sendmail(nnsender.value, nnempfaenger.value,nnbetreff.value, nntext.value)"> send mail </button><div>
+
 `,
 directives: [For]
 })
@@ -42,6 +48,7 @@ class Mail{
         this.delMail = mailApi.deleteMail;
         this.delFolder = mailApi.deleteFolder;
         this.mvMail = mailApi.moveMail;
+        this.crMail = mailApi.createMail;
 
         this.debugAusgabe='';
         this.myText = '';
@@ -96,6 +103,11 @@ class Mail{
     setNeuerNameFolder(nnamefolder) {
         this.neuerNameFolder=nnamefolder.value;
         console.log("neuer name folder: "+nnamefolder.value);
+    };
+
+    sendmail(s,e,b,t) {
+        console.log("sender: "+s+ " empfänger: " +e+ " subject"+b+" text: "+t);
+        this.crMail(s,e,b,t).then(resp => {this.debugAusgabe = resp.data});
     };
 
 

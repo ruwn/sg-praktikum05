@@ -50,4 +50,13 @@ export class MailApi {
         console.log("MailApi.renameFolder: "+url+"," + newFolder);
         return axios.put(url, para ).then(response => response);
     }
+
+    createMail(s,e,b,t) {
+        var url= 'http://localhost:3000/mailapi/createmail/';
+        var para = {sender: s, recipients: e, subject: b, text: t };
+        console.log("MailApi.createMal: "+url+"," + para);
+
+        return axios.post(url,para).then(response => response);
+
+    }
 }
