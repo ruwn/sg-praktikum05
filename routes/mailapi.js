@@ -72,9 +72,10 @@ router.route('/deletemail/:id').delete(function(req, res){
 router.route('/createmail/').post(function(req, res){
   console.log("Creating mail");
   var m = new Mails();
-  m.sender = req.body.s;
-  m.recipients = req.body.r;
-  m.text = req.body.t;
+  m.sender = req.body.sender;
+  m.recipients = req.body.recipients;
+  m.text = req.body.text;
+  m.subject = req.body.subject;
   m.date = new Date();
   console.log("req.body.s: " + req.body.s);
   console.log(m);
