@@ -77,6 +77,7 @@ router.route('/createmail/').post(function(req, res){
   m.text = req.body.text;
   m.subject = req.body.subject;
   m.date = new Date();
+  m.folder = "new";
   console.log("req.body.s: " + req.body.s);
   console.log(m);
   m.save(function(err) {
