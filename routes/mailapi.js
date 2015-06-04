@@ -116,8 +116,6 @@ router.route('/deletefolder/:id').delete(function(req, res){
 
 // Update folder name
 router.route('/updfoldername/:id').put(function(req, res){
-  console.log(req.params.id);
-  console.log(req.body.folder);
   var oldname = req.params.id;
   var newname = req.body.folder;
   console.log("Renaming " + oldname + " to " + newname);
@@ -128,7 +126,7 @@ router.route('/updfoldername/:id').put(function(req, res){
                  }
                  res.json({message:"Successfully renamed"});
                });
-res.json({message:"Successfully renamed"});
+// res.json({message:"Successfully renamed"});
 });
 
 module.exports = router;
