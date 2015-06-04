@@ -15,18 +15,25 @@ import {MailApi} from 'mailApi';
     <div class="new-user-button">
         <button class="ru-button --primary" (click)="selectedButton(folder)" > {{folder}} </button>
 
-        <button (click) = "deleteFolder(folder)">deleteFolder </button>
-        <input type="text" #nname (keyup)="setNeuerName(nname)"></input>
-        <button (click) = "renameFolder(folder,nname.text)">renameFolder</button>
+        <button (click) = "removeFolder(folder)">deleteFolder </button>
+        <input type="text" #nnamefolder (keyup)="setNeuerNameFolder(nnamefolder)"></input>
+        <button (click) ="updateFolder(folder)">renameFolder</button>
 
     </div>
 </div>
 <div *for="#mail of mails">
     <button class="ru-button --primary" (click)="mailOpen(mail)" >     <strong>Subject: </strong> {{mail.subject}} <strong> Date:</strong> {{mail.date}} </button>
-    <button (click) ="deleteMail(mail)">DeleteMail</button>
-</div>
+    <button (click) ="removeMail(mail)">DeleteMail</button>
+    <input type="text" #nnamemail (keyup)="setNeuerNameMail(nnamemail)"></input>
+    <button (click) ="updateMail(mail)">move2Folder</button>
+    </div>
+    <div> {{myText}} </div>
+    <br><br><br><br><br><br><br>
 
-<div> {{myText}} </div>
+    <div>sender: <input type="text" #nnsender></input>  <div>
+    <div>empfänger: <input type="text" #nnempfaenger></input>  <div>
+    <div>betreff: <input type="text" #nnbetreff></input>  <div>
+    <div>text: <input type="text" #nntext></input><button (click)="sendmail(nnsender.value, nnempfaenger.value,nnbetreff.value, nntext.value)"> send mail </button><div>
 
 `,
 directives: [For]
@@ -38,7 +45,10 @@ class Mail{
         this.getFolder = mailApi.getAll;
         this.getMails= mailApi.getMails;
         this.rnFolder = mailApi.renameFolder;
-        this.deleteMail = mailApi.deleteMail;
+        this.delMail = mailApi.deleteMail;
+        this.delFolder = mailApi.deleteFolder;
+        this.mvMail = mailApi.moveMail;
+        this.crMail = mailApi.createMail;
 
         this.debugAusgabe='';
         this.myText = '';
@@ -46,7 +56,8 @@ class Mail{
         this.folders=[];
         this.resp=[];
         this.mails=[];
-        this.neuerName='';
+        this.neuerNameFolder='';
+        this.neuerNameMail='';
         this.mailID='';
         this.getFolder().then(resp => {this.folders = resp.data});
 
@@ -60,33 +71,51 @@ class Mail{
 
     };
 
-    mailOpen(mailId) {
-        console.log(mailId);
-        this.myText = mailId.text;
-        this.getMails(mailID).then(resp => {this.mails=resp.data});
-            console.log(mailId._id);
+    mailOpen(mail) {
+        console.log(mail);
+        this.myText = mail.text;
+        this.getMails(mail).then(resp => {this.mails=resp.data});
+            console.log(mail._id);
     };
 
-    deleteFolder(folder) {
-        console.log(folder);
-
+    removeFolder(folder) {
+        console.log("Mail.remove " +folder);
+        this.delFolder(folder).then(resp => {this.debugAusgabe = resp._id});
     };
 
-    renameFolder(folder, nn) {
-        console.log("folder: "+folder +"  "+ "neuer name: "+ this.neuerName);
-        this.rnFolder(folder,this.neuerName).then(resp => {this.debugAusgabe = resp.data});
+    updateFolder(folder) {
+        console.log("Mail.updateFolder: folder: "+ folder +"  "+ "neuer name: "+ this.neuerNameFolder);
+        this.rnFolder(folder,this.neuerNameFolder).then(resp => {this.debugAusgabe = resp.data});
     };
 
-    deleteMail(mail) {
+    removeMail(mail) {
         this.mailID=mail._id;
-        console.log(this.mailID);
-        this.deleteMail(mail._id).then(resp => {this.debugAusgabe = resp.data});
+        console.log("Mail.removeMail: "+this.mailID);
+        this.delMail(this.mailID).then(resp => {this.debugAusgabe = resp.data});
+    };
+    //moves mail to another folder
+    updateMail(mail) {
+        console.log(mail);
+        console.log("Mail.updateFolder: folder: "+ mail._id +"  "+ "neuer name: "+ this.neuerNameMail);
+        this.mvMail(mail._id,this.neuerNameMail).then(resp => {this.debugAusgabe = resp.data});
     }
 
-    setNeuerName(nname) {
-        console.log(nname.value);
-        this.neuerName=nname.value;
+    setNeuerNameFolder(nnamefolder) {
+        this.neuerNameFolder=nnamefolder.value;
+        console.log("neuer name folder: "+nnamefolder.value);
     };
+
+    sendmail(s,e,b,t) {
+        console.log("sender: "+s+ " empfänger: " +e+ " subject"+b+" text: "+t);
+        this.crMail(s,e,b,t).then(resp => {this.debugAusgabe = resp.data});
+    };
+
+
+    setNeuerNameMail(nnamemail) {
+        this.neuerNameMail=nnamemail.value;
+        console.log("neuer name mail: "+nnamemail.value);
+    };
+
 
 }
 
