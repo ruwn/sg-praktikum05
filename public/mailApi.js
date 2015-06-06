@@ -10,6 +10,7 @@ System.register("mailApi", [], function($__export) {
         return ($traceurRuntime.createClass)(MailApi, {
           getAll: function() {
             var url = 'http://localhost:3000/mailapi/folders';
+            console.log("funzt " + url);
             return axios.get(url).then(function(response) {
               return response;
             });

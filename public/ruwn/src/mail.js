@@ -83,15 +83,18 @@ class Mail{
     removeFolder(folder) {
         console.log("Mail.remove " +folder);
         this.delFolder(folder).then(resp => {this.debugAusgabe = resp._id});
-        this.getFolder().then(resp => {this.folders = resp.data});
+        this.getFolder().then(resp => {this.folders = resp.data}); //folder liste neu laden
 
 };
-
+    // rename folder
     updateFolder(folder) {
         console.log("Mail.updateFolder: folder: "+ folder +"  "+ "neuer name: "+ this.neuerNameFolder);
         this.rnFolder(folder,this.neuerNameFolder).then(resp => {this.debugAusgabe = resp.data});
+        this.getFolder().then(resp => {this.folders = resp.data}); //folder liste neu laden
+
     };
 
+    //
     removeMail(mail) {
         this.mailID=mail._id;
         console.log("Mail.removeMail: "+this.mailID);

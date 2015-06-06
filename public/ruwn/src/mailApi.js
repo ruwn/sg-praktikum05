@@ -2,12 +2,10 @@
  * Created by rdreimann on 03.06.15.
  */
 export class MailApi {
-    const  urlGetAll = 'http://localhost:3000/mailapi/folders';
+    const urlGetFolder ='http://localhost:3000/mailapi/folders';
 
     getAll() {
-        return axios.get(urlGetAll).then( response => response);
-
-//        var url = 'http://api.randomuser.me';
+        return axios.get(urlGetFolder).then( response => response);
 //        return axios.get(url).then(response => response.data.results[0].user.name.first);
     }
 

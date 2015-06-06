@@ -76,6 +76,9 @@ System.register("mail", ["angular2/angular2", "mailApi"], function($__export) {
             this.rnFolder(folder, this.neuerNameFolder).then(function(resp) {
               $__0.debugAusgabe = resp.data;
             });
+            this.getFolder().then(function(resp) {
+              $__0.folders = resp.data;
+            });
           },
           removeMail: function(mail) {
             var $__0 = this;
