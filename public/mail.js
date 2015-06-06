@@ -29,6 +29,7 @@ System.register("mail", ["angular2/angular2", "mailApi"], function($__export) {
           this.crMail = mailApi.createMail;
           this.debugAusgabe = '';
           this.myText = '';
+          this.folder = '';
           this.folders = [];
           this.resp = [];
           this.mails = [];
@@ -42,6 +43,7 @@ System.register("mail", ["angular2/angular2", "mailApi"], function($__export) {
         return ($traceurRuntime.createClass)(Mail, {
           selectedButton: function(folder) {
             var $__0 = this;
+            this.folder = folder;
             console.log("läuft");
             console.log(folder);
             this.getMails(folder).then(function(resp) {
@@ -64,6 +66,9 @@ System.register("mail", ["angular2/angular2", "mailApi"], function($__export) {
             this.delFolder(folder).then(function(resp) {
               $__0.debugAusgabe = resp._id;
             });
+            this.getFolder().then(function(resp) {
+              $__0.folders = resp.data;
+            });
           },
           updateFolder: function(folder) {
             var $__0 = this;
@@ -77,7 +82,10 @@ System.register("mail", ["angular2/angular2", "mailApi"], function($__export) {
             this.mailID = mail._id;
             console.log("Mail.removeMail: " + this.mailID);
             this.delMail(this.mailID).then(function(resp) {
-              $__0.debugAusgabe = resp.data;
+              $__0.debugAusgabe = "remove Mail";
+            });
+            this.getMails(this.folder).then(function(resp) {
+              $__0.mails = resp.data;
             });
           },
           updateMail: function(mail) {

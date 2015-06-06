@@ -50,9 +50,10 @@ class Mail{
         this.mvMail = mailApi.moveMail;
         this.crMail = mailApi.createMail;
 
+
         this.debugAusgabe='';
         this.myText = '';
-
+        this.folder='';
         this.folders=[];
         this.resp=[];
         this.mails=[];
@@ -64,6 +65,7 @@ class Mail{
     };
 
     selectedButton(folder) {
+        this.folder = folder;
         console.log("läuft");
         console.log(folder);
         this.getMails(folder).then(resp => {this.mails=resp.data});
@@ -81,7 +83,9 @@ class Mail{
     removeFolder(folder) {
         console.log("Mail.remove " +folder);
         this.delFolder(folder).then(resp => {this.debugAusgabe = resp._id});
-    };
+        this.getFolder().then(resp => {this.folders = resp.data});
+
+};
 
     updateFolder(folder) {
         console.log("Mail.updateFolder: folder: "+ folder +"  "+ "neuer name: "+ this.neuerNameFolder);
@@ -91,8 +95,10 @@ class Mail{
     removeMail(mail) {
         this.mailID=mail._id;
         console.log("Mail.removeMail: "+this.mailID);
-        this.delMail(this.mailID).then(resp => {this.debugAusgabe = resp.data});
-    };
+        this.delMail(this.mailID).then(resp => {this.debugAusgabe = "remove Mail"});
+        this.getMails(this.folder).then(resp => {this.mails=resp.data});
+
+};
     //moves mail to another folder
     updateMail(mail) {
         console.log(mail);
